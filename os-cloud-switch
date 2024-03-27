@@ -1,0 +1,15 @@
+# needs to be sourced
+OS_CLOUD=openstack
+OS_CONFIG_PATH=~/.config/openstack
+configs=($(ls $OS_CONFIG_PATH))
+for i in ${!configs[@]};
+do
+    echo $i: ${configs[$i]}
+done
+read -p "Select config: " cfx_idx
+echo $cfx_idx ${configs[$cfx_idx]}
+export OS_CLIENT_CONFIG_FILE=$OS_CONFIG_PATH/${configs[$cfx_idx]}
+echo OS_CLIENT_CONFIG_FILE: $OS_CLIENT_CONFIG_FILE
+project_id=$(openstack token issue -c project_id -f value)
+project_name=$(openstack project show $project_id -c name -f value)
+echo \#\# Project set to $project_name  \#\#
